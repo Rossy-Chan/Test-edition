@@ -2,7 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 const chalk = require('chalk');
-const AWS = require('aws-sdk');
+const AWS = require('@aws-sdk/client-s3');
 const axios = require('axios');
 
 const {
@@ -21,12 +21,12 @@ async function qr() {
 
   const conn = makeWASocket({
     printQRInTerminal: true,
-    browser: ['BOT', 'Web', 'v2'],
+    browser: ['BOT', 'Web', 'v1'],
     auth: state,
     version
   });
 
-  console.log('ℹ️  Connecting to Whatsapp... Please wait.');
+  console.log('⏳  Connecting to Whatsapp... Please wait.');
   await conn.ev.on('creds.update', saveCreds);
 
   conn.ev.on('connection.update', async (update) => {
@@ -38,7 +38,7 @@ async function qr() {
     }
 
     if (connection === 'open') {
-      console.log('Successfully connected');
+      console.log('✅ Successfully connected');
       let router = express.Router();
 
       router.get('/', (req, res) => {
@@ -53,7 +53,7 @@ async function qr() {
       app.enable('trust proxy');
       app.set("json spaces", 2);
       app.use(cors());
-      app.use(secure);
+    //  app.use(secure);
       app.use(express.static("assets"));
 
       router.get('/api', async (req, res) => {
@@ -79,7 +79,7 @@ async function qr() {
 
   // Read the new news from the API.
   try {
-    const response = await axios.get("https://ada-derana-news-api.sl-technicaltec.repl.co/");
+    const response = await axios.get("https://test.ayodyavichaksha.repl.co/api/latest");
     const newsData = response.data;
     const newsArticles = Object.values(newsData);
 
@@ -93,16 +93,16 @@ const imgurl = article.image;
 // Check if the image URL is incomplete.
 if (imgurl === undefined || imgurl.length === 0) {
   // Send a backup image URL.
-  await conn.sendMessage('120363165330389006@g.us', { image: { url: 'https://filmhall.eprogrammers.lk/film_hall/image/NEWS%20SINHALA%20247%2020231025_164826.jpg' }, caption: `*${article.title}*\n\n${article.description}\n\n🗓️${article.time}\n🪀ꜱᴏᴜʀᴄᴇ - www.adaderana.lk\n📌ᴘᴏᴡᴇʀᴅ ʙʏ ɴʙᴍᴏᴅꜱ` });
+  await conn.sendMessage('120363175378138503@g.us', { image: { url: 'https://telegra.ph/file/af7cf83d69b39b5ddf1f9.jpg' }, caption: `*${article.title}*\n\n${article.desc}\n\n🗓️ ${article.time}\n⛦ ꜱᴏᴜʀᴄᴇ - ᴡᴡᴡ.ʜɪʀᴜɴᴇᴡs.ʟᴋ` });
 } else {
   // Check if the image URL contains jpg, png, or webp.
   const imageExtensionRegex = /(jpg|png|webp)$/i;
   if (!imageExtensionRegex.test(imgurl)) {
     // Send a backup image URL.
-    await conn.sendMessage('120363165330389006@g.us', { image: { url: 'https://filmhall.eprogrammers.lk/film_hall/image/NEWS%20SINHALA%20247%2020231025_164826.jpg' }, caption: `*${article.title}*\n\n${article.description}\n\n🗓️${article.time}\n🪀ꜱᴏᴜʀᴄᴇ - www.adaderana.lk\n📌ᴘᴏᴡᴇʀᴅ ʙʏ ɴʙᴍᴏᴅꜱ` });
+    await conn.sendMessage('120363175378138503@g.us', { image: { url: 'https://telegra.ph/file/af7cf83d69b39b5ddf1f9.jpg' }, caption: `*${article.title}*\n\n${article.desc}\n\n🗓 ️${article.time}\n⛦ ꜱᴏᴜʀᴄᴇ - ᴡᴡᴡ.ʜɪʀᴜɴᴇᴡs.ʟᴋ` });
   } else {
     // Send the original image URL.
-    await conn.sendMessage('120363165330389006@g.us', { image: { url: imgurl }, caption: `*${article.title}*\n\n${article.description}\n\n🗓️${article.time}\n🪀ꜱᴏᴜʀᴄᴇ - www.adaderana.lk\n📌ᴘᴏᴡᴇʀᴅ ʙʏ ɴʙᴍᴏᴅꜱ` });
+    await conn.sendMessage('120363175378138503@g.us', { image: { url: imgurl }, caption: `*${article.title}*\n\n${article.desc}\n\n🗓️ ${article.time}\n⛥ ꜱᴏᴜʀᴄᴇ - ᴡᴡᴡ.ʜɪʀᴜɴᴇᴡs.ʟᴋ` });
   }
 }
 

@@ -9,6 +9,7 @@
     "dependencies": {
         "@adiwajshing/baileys": "git+https://github.com/vihangayt0/Baileys.git",
         "@adiwajshing/keyed-db": "^0.2.4",
+        "@aws-sdk/client-s3": "^3.420.0",
         "axios": "^0.24.0",
         "body-parser": "^1.20.2",
         "chalk": "^4.1.2",
